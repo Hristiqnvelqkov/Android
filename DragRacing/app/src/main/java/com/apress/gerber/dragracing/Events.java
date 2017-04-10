@@ -22,6 +22,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import static android.R.attr.button;
+import static android.R.attr.editorExtras;
+import static android.R.attr.start;
 import static android.content.DialogInterface.BUTTON_NEGATIVE;
 import static android.content.DialogInterface.BUTTON_POSITIVE;
 
@@ -36,9 +38,9 @@ public class Events extends AppCompatActivity {
         setContentView(R.layout.activity_events);
         mEventDb=new EventDb(this);
         Cursor events;
-        EditText editText=(EditText) findViewById(R.id.eventTitle);
+        final EditText editText=(EditText) findViewById(R.id.eventTitle);
         editText.setVisibility(View.GONE);
-        EditText editText1=(EditText) findViewById(R.id.eventDesc);
+        final EditText editText1=(EditText) findViewById(R.id.eventDesc);
         editText1.setVisibility(View.GONE);
         Button event=(Button) findViewById(R.id.submitEvent);
         event.setVisibility(View.GONE);
@@ -58,9 +60,12 @@ public class Events extends AppCompatActivity {
                 mEventDb.open();
                 final AlertDialog alert=new AlertDialog.Builder(Events.this).create();
                 alert.setButton(BUTTON_POSITIVE,"Edit Event",new DialogInterface.OnClickListener(){
-
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        Intent intent = new Intent(Events.this,EditEvent.class);
+                        intent.putExtra("currentUser",currentUser);
+                        intent.putExtra("event_id",eventId+"");
+                        startActivity(intent);
                         mEventDb.close();
                         alert.cancel();
                     }
