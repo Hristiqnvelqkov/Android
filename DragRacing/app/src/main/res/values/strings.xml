@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">DragRacing</string>
+    <string name="profile">User Profile</string>
 </resources>

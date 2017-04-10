@@ -32,14 +32,24 @@ public class EventDb {
         mSqlHelper=new SqlHelper(mContext);
         DataBase=mSqlHelper.getWritableDatabase();
     }
-    public void createEvent(String title, String description){
+    public void createEvent(String title, String description,UserModel user){
         ContentValues content=new ContentValues();
         content.put(COLUMN_NAME_TITLE,title);
         content.put(COLUMN_NAME_DESCRIPTION,description);
+        content.put(COLUMN_NAME_CREATOR, user.getId());
         DataBase.insert(TABLE_NAME,null,content);
+
+    }
+    public void deleteEvent(int id){
+        DataBase.execSQL("DELETE FROM event WHERE _id = "+id);
     }
     public Cursor getAllEvents(){
         return DataBase.rawQuery("SELECT * FROM "+TABLE_NAME,null);
+    }
+    public Cursor userEvents(UserModel user){
+        Cursor query=DataBase.rawQuery("Select * from "+TABLE_NAME+ " WHERE user_id = " +user.getId(),null );
+        query.moveToFirst();
+        return query;
     }
     public void close(){
         mSqlHelper.close();

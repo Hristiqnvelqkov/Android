@@ -1,5 +1,6 @@
 package com.apress.gerber.dragracing;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -24,7 +25,10 @@ public class SignUp extends AppCompatActivity {
         if(pass.equals(editText2.getText().toString())){
             mUserDb=new UserDb(this);
             mUserDb.open();
+            mUserDb.createUser(name,pass);
             mUserDb.close();
+            Intent intent = new Intent(this,AllEvents.class);
+            startActivity(intent);
         }
     }
 }
