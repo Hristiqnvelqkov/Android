@@ -5,6 +5,9 @@ import android.database.Cursor;
 import android.os.AsyncTask;
 import android.provider.DocumentsContract;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
@@ -33,11 +36,12 @@ public class GetTime extends AsyncTask<String,Void,HashMap> {
     @Override
     protected HashMap doInBackground(String... params) {
         String city = params[0];
+        System.out.println(city);
         mData=new TimeData(mContext);
         try {
             mData.open();
-            URL mUrl = new URL("https://time.is/"+city);
-            HttpsURLConnection connection= (HttpsURLConnection) mUrl.openConnection();
+            URL mUrl = new URL("http://192.168.45.70:3000/cities"+city);
+            HttpURLConnection connection= (HttpURLConnection) mUrl.openConnection();
             connection.connect();
             String inputLine;
             StringBuffer getRequest = new StringBuffer();
@@ -46,20 +50,21 @@ public class GetTime extends AsyncTask<String,Void,HashMap> {
                 getRequest.append(inputLine);
             }
             String getRequestToString = getRequest.toString();
-            Document doc = Jsoup.parse(getRequestToString);
-            Elements e = doc.select("#twd");
-            Elements e1 = doc.select(".keypoints");
-            String timeNow=e.text();
-            String utc = e1.text().split(",")[1].split(" ")[2];
-            mData.addCityTime(city,utc);
-            mData.close();
-            in.close();
-            cityTime.put(city,timeNow);
+            JSONArray cityZoneOffset = new JSONArray(getRequestToString);
+            for(int i=0;i<cityZoneOffset.length();i++){
+                JSONObject ob = cityZoneOffset.getJSONObject(i);
+                String thisCity=ob.get("city").toString();
+                String thisTime=ob.get("zoneOffset").toString();
+                cityTime.put(thisCity,thisTime);
+            }
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }catch (IOException e){
             e.printStackTrace();
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
+       // System.out.println(cityTime);
         return cityTime;
     }
 }
