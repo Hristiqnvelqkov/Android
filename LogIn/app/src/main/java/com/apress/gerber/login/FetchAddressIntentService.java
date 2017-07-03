@@ -15,26 +15,29 @@ import java.util.Locale;
  */
 
 public class FetchAddressIntentService extends IntentService {
-    public static final String BROADCAST_ACTION="com.example.android.FetchAddressIntentService.BROADCAST";
-    public static final String EXTENDED_DATA_STATUS="com.example.android.FetchAddressIntentService.STATUS";
+    public static final String BROADCAST_ACTION = "com.example.android.FetchAddressIntentService.BROADCAST";
+    public static final String EXTENDED_DATA_STATUS = "com.example.android.FetchAddressIntentService.STATUS";
+
     public FetchAddressIntentService(String name) {
         super(name);
     }
-    public FetchAddressIntentService(){
+
+    public FetchAddressIntentService() {
         super("FetchAddressIntentServize");
     }
+
     @Override
     protected void onHandleIntent(Intent intent) {
-        List<Address> addresses=null;
-        String cityName=intent.getStringExtra(LogActivity.CITY_EXTRA);
+        List<Address> addresses = null;
+        String cityName = intent.getStringExtra(LogActivity.CITY_EXTRA);
         Geocoder geocoder = new Geocoder(this, Locale.getDefault());
         StringBuffer addressesBuf = new StringBuffer();
         try {
-            addresses = geocoder.getFromLocationName(cityName,5);
+            addresses = geocoder.getFromLocationName(cityName, 5);
         } catch (IOException e) {
             e.printStackTrace();
         }
-        if(addresses!=null) {
+        if (addresses != null) {
             for (Address address : addresses) {
                 addressesBuf.append(address.getFeatureName());
                 addressesBuf.append(",");
@@ -42,7 +45,7 @@ public class FetchAddressIntentService extends IntentService {
         }
         Intent broadcast = new Intent();
         broadcast.setAction(BROADCAST_ACTION);
-        broadcast.putExtra(EXTENDED_DATA_STATUS,addressesBuf.toString());
+        broadcast.putExtra(EXTENDED_DATA_STATUS, addressesBuf.toString());
         LocalBroadcastManager.getInstance(this).sendBroadcast(broadcast);
     }
 }

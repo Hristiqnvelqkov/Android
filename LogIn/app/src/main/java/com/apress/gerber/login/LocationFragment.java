@@ -4,7 +4,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.LocalBroadcastManager;
@@ -22,15 +21,13 @@ import static com.apress.gerber.login.LogActivity.CITY_EXTRA;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link Location.OnFragmentInteractionListener} interface
+ * {@link LocationFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
  * create an instance of this fragment.
  */
-public class Location extends Fragment {
+public class LocationFragment extends BaseFragment {
 
-    private OnFragmentInteractionListener mListener;
-
-    public Location() {
+    public LocationFragment() {
         // Required empty public constructor
     }
 
@@ -38,6 +35,7 @@ public class Location extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
+
     AutoCompleteTextView iSearch;
     View V;
     TextWatcher textWatcher = new TextWatcher() {
@@ -53,8 +51,8 @@ public class Location extends Fragment {
 
         @Override
         public void afterTextChanged(Editable s) {
-            Intent intent = new Intent(getContext(),FetchAddressIntentService.class);
-            intent.putExtra(CITY_EXTRA,s.toString());
+            Intent intent = new Intent(getContext(), FetchAddressIntentService.class);
+            intent.putExtra(CITY_EXTRA, s.toString());
             getContext().startService(intent);
 
         }
@@ -67,58 +65,21 @@ public class Location extends Fragment {
         V = inflater.inflate(R.layout.fragment_location, container, false);
         ResponseReceiver receiver = new ResponseReceiver();
         IntentFilter filter = new IntentFilter(FetchAddressIntentService.BROADCAST_ACTION);
-        LocalBroadcastManager.getInstance(getContext()).registerReceiver(receiver,filter);
-        iSearch =(AutoCompleteTextView) V.findViewById(R.id.location1);
+        LocalBroadcastManager.getInstance(getContext()).registerReceiver(receiver, filter);
+        iSearch = (AutoCompleteTextView) V.findViewById(R.id.location1);
         iSearch.addTextChangedListener(textWatcher);
         return V;
 
     }
+
     public class ResponseReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
             String addresses = intent.getStringExtra(FetchAddressIntentService.EXTENDED_DATA_STATUS);
-            String[] addressesArr= addresses.split(",");
-            ArrayAdapter<String> adapter = new ArrayAdapter<String>(context,android.R.layout.simple_dropdown_item_1line,addressesArr);
+            String[] addressesArr = addresses.split(",");
+            ArrayAdapter<String> adapter = new ArrayAdapter<String>(context, android.R.layout.simple_dropdown_item_1line, addressesArr);
             AutoCompleteTextView view = (AutoCompleteTextView) V.findViewById(R.id.location1);
             view.setAdapter(adapter);
         }
-    }
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
-    }
-
-//    @Override
-//    public void onAttach(Context context) {
-//        super.onAttach(context);
-//        if (context instanceof OnFragmentInteractionListener) {
-//            mListener = (OnFragmentInteractionListener) context;
-//        } else {
-//            throw new RuntimeException(context.toString()
-//                    + " must implement OnFragmentInteractionListener");
-//        }
-//    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
-    }
-
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
     }
 }
