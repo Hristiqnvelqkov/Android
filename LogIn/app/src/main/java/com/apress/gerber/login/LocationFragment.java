@@ -27,10 +27,6 @@ import static com.apress.gerber.login.LogActivity.CITY_EXTRA;
  */
 public class LocationFragment extends BaseFragment {
 
-    public LocationFragment() {
-        // Required empty public constructor
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
