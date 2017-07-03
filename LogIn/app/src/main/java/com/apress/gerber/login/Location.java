@@ -8,7 +8,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.LocalBroadcastManager;
-import android.support.v4.graphics.drawable.DrawableCompat;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -17,7 +16,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 
-import static com.apress.gerber.login.Log.CITY_EXTRA;
+import static com.apress.gerber.login.LogActivity.CITY_EXTRA;
 
 
 /**
@@ -25,18 +24,9 @@ import static com.apress.gerber.login.Log.CITY_EXTRA;
  * Activities that contain this fragment must implement the
  * {@link Location.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link Location#newInstance} factory method to
  * create an instance of this fragment.
  */
 public class Location extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
 
     private OnFragmentInteractionListener mListener;
 
@@ -44,31 +34,9 @@ public class Location extends Fragment {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment Location.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static Location newInstance(String param1, String param2) {
-        Location fragment = new Location();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
     AutoCompleteTextView iSearch;
     View V;
@@ -113,9 +81,6 @@ public class Location extends Fragment {
             ArrayAdapter<String> adapter = new ArrayAdapter<String>(context,android.R.layout.simple_dropdown_item_1line,addressesArr);
             AutoCompleteTextView view = (AutoCompleteTextView) V.findViewById(R.id.location1);
             view.setAdapter(adapter);
-            for(String i : addressesArr){
-                System.out.println(i);
-            }
         }
     }
     // TODO: Rename method, update argument and hook method into UI event

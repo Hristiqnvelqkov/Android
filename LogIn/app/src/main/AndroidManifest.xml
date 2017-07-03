@@ -14,9 +14,9 @@
             android:name=".FetchAddressIntentService"
             android:exported="false"/>
 
-        <receiver android:name="com.apress.gerber.login.Log$ResponseReceiver"></receiver>
+        <receiver android:name="com.apress.gerber.login.LogActivity$ResponseReceiver"></receiver>
 
-        <activity android:name=".Log">
+        <activity android:name=".LogActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
