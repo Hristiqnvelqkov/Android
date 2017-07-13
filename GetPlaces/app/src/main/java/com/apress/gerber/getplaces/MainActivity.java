@@ -1,33 +1,53 @@
 package com.apress.gerber.getplaces;
-
+import android.content.Intent;
 import android.net.Uri;
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.util.Log;
+import android.widget.Toast;
 
-import com.google.android.gms.common.api.Status;
-import com.google.android.gms.location.places.Place;
-import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
-import com.google.android.gms.location.places.ui.PlaceSelectionListener;
 
 public class MainActivity extends AppCompatActivity implements BaseFragment.OnFragmentInteractionListener {
-
+    FragmentManager manager = getSupportFragmentManager();
+    public static final String SEARCH_TAG="search_form";
+    public static final String LIST_TAG="lists";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        FragmentManager manger = getSupportFragmentManager();
-        Fragment search = new SearchFormFragment();
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.add(R.id.activity_main,search);
-        transaction.commit();
+        if(manager.findFragmentByTag(LIST_TAG)==null) {
+            if(manager.findFragmentByTag(SEARCH_TAG)==null) {
+                Fragment search = new SearchFragment();
+                commitFragment(search, false,SEARCH_TAG);
+            }
+        }
     }
 
     @Override
-    public void onFragmentInteraction(Uri uri) {
-
+    public void onActivityResult(int requestCode, int resultCode,Intent data){
+        super.onActivityResult(requestCode,resultCode,data);
+    }
+    public void commitFragment(Fragment fragment, boolean addBackStack,String tag){
+        FragmentTransaction transaction = manager.beginTransaction();
+        if(addBackStack){
+            transaction.addToBackStack(tag);
+        }
+        if(fragment instanceof SearchFragment){
+            transaction.add(fragment,tag);
+        }
+        if(fragment instanceof ListFragment){
+            transaction.replace(R.id.activity_main,fragment,tag);
+        }
+        transaction.commit();
+    }
+    @Override
+    public void sendBarsToActivity(String[] bars) {
+        Fragment listBars = new ListFragment();
+        Bundle args = new Bundle();
+        args.putStringArray("bars",bars);
+        listBars.setArguments(args);
+        commitFragment(listBars,true,LIST_TAG);
     }
 }

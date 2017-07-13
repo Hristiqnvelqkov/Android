@@ -14,12 +14,11 @@ import android.widget.TextView;
  * Activities that contain this fragment must implement the
  * {@link BaseFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link BaseFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
 public class BaseFragment extends Fragment {
 
-    private OnFragmentInteractionListener mListener;
+    protected OnFragmentInteractionListener mListener;
 
 
     @Override
@@ -45,6 +44,6 @@ public class BaseFragment extends Fragment {
 
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
+        void sendBarsToActivity(String[] bars);
     }
 }

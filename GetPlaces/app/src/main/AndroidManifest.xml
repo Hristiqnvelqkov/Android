@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="com.apress.gerber.getplaces">
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -9,7 +10,7 @@
         android:theme="@style/AppTheme">
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyDd0S9_ZuAJ41R2msgp_l3UcxTzUCpDits"/>
+            android:value="AIzaSyBTpQv1lJAxORmRgnI9WAIs9jCw9n9QVag"/>
 
         <activity android:name=".MainActivity">
             <intent-filter>
