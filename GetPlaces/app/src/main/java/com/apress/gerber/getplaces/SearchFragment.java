@@ -29,6 +29,7 @@ import static android.app.Activity.RESULT_OK;
 
 public class SearchFragment extends BaseFragment {
     final static int PLACE_AUTOCOMPLETE_REQUEST_CODE =1;
+    static String location;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,23 +53,16 @@ public class SearchFragment extends BaseFragment {
             if (resultCode == RESULT_OK) {
                 Place place = PlaceAutocomplete.getPlace(getContext(), data);
                 GetAdresses get = new GetAdresses();
+                location=place.getLatLng().toString();
                 try {
-                    String bars=get.execute(place.getLatLng().toString()).get();
-                    JSONObject barsJson = new JSONObject(bars);
-                    JSONArray jsonArray = (barsJson.getJSONArray("results"));
-                    buff = new String[jsonArray.length()];
-                    for (int i = 0; i < jsonArray.length(); i++) {
-                        JSONObject explrObject = jsonArray.getJSONObject(i);
-                        buff[i]=(explrObject.get("name").toString());
-                    }
+                    buff=get.execute(location,"name").get();
                     sendBars(buff);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 } catch (ExecutionException e) {
                     e.printStackTrace();
-                } catch (JSONException e) {
-                    e.printStackTrace();
                 }
+
             }
         }
     }

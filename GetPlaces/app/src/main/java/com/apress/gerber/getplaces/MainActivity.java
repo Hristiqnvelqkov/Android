@@ -40,6 +40,7 @@ public class MainActivity extends AppCompatActivity implements BaseFragment.OnFr
         if(fragment instanceof ListFragment){
             transaction.replace(R.id.activity_main,fragment,tag);
         }
+
         transaction.commit();
     }
     @Override
@@ -49,5 +50,13 @@ public class MainActivity extends AppCompatActivity implements BaseFragment.OnFr
         args.putStringArray("bars",bars);
         listBars.setArguments(args);
         commitFragment(listBars,true,LIST_TAG);
+    }
+
+    @Override
+    public void addMapActivity(String[] buff) {
+        Intent intent = new Intent(this,MapActivity.class);
+
+        intent.putExtra("locations",buff);
+        startActivity(intent);
     }
 }

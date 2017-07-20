@@ -45,5 +45,6 @@ public class BaseFragment extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void sendBarsToActivity(String[] bars);
+        void addMapActivity(String[] buff);
     }
 }
