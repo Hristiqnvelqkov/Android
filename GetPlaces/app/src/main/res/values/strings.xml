@@ -6,4 +6,8 @@
     <string name="title_activity_base">BaseActivity</string>
     <string name="search">Search</string>
     <string name="title_activity_maps">Map</string>
+    <string name="grid">Grid View</string>
+    <string name="showList">List View</string>
+    <string name="details">Details</string>
+    <string name="showMap">Show in Map</string>
 </resources>

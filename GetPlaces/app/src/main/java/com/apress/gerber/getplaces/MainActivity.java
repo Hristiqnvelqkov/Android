@@ -36,8 +36,7 @@ public class MainActivity extends AppCompatActivity implements BaseFragment.OnFr
         }
         if(fragment instanceof SearchFragment){
             transaction.add(fragment,tag);
-        }
-        if(fragment instanceof ListFragment){
+        }else{
             transaction.replace(R.id.activity_main,fragment,tag);
         }
 
@@ -55,8 +54,15 @@ public class MainActivity extends AppCompatActivity implements BaseFragment.OnFr
     @Override
     public void addMapActivity(String[] buff) {
         Intent intent = new Intent(this,MapActivity.class);
-
         intent.putExtra("locations",buff);
         startActivity(intent);
+    }
+    @Override
+    public void changeListViewToGrid(String[] bars){
+        Fragment grid = new GridFragment();
+        Bundle args = new Bundle();
+        args.putStringArray("bars",bars);
+        grid.setArguments(args);
+        commitFragment(grid,true,"gridFragment");
     }
 }
