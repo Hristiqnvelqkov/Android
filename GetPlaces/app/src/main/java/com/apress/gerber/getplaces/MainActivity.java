@@ -1,12 +1,13 @@
 package com.apress.gerber.getplaces;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
-import android.widget.Toast;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 
 
 public class MainActivity extends AppCompatActivity implements BaseFragment.OnFragmentInteractionListener {
@@ -43,25 +44,26 @@ public class MainActivity extends AppCompatActivity implements BaseFragment.OnFr
         transaction.commit();
     }
     @Override
-    public void sendBarsToActivity(String[] bars) {
+    public void sendBarsToActivity(Place[] bars) {
         Fragment listBars = new ListFragment();
         Bundle args = new Bundle();
-        args.putStringArray("bars",bars);
+        args.putParcelableArray("bars",bars);
         listBars.setArguments(args);
         commitFragment(listBars,true,LIST_TAG);
     }
 
     @Override
-    public void addMapActivity(String[] buff) {
+    public void addMapActivity(Place[] buff) {
+        ArrayList<Place> places = new ArrayList<Place>(Arrays.asList(buff));
         Intent intent = new Intent(this,MapActivity.class);
-        intent.putExtra("locations",buff);
+        intent.putParcelableArrayListExtra("bars",places);
         startActivity(intent);
     }
     @Override
-    public void changeListViewToGrid(String[] bars){
+    public void changeListViewToGrid(Place[] bars){
         Fragment grid = new GridFragment();
         Bundle args = new Bundle();
-        args.putStringArray("bars",bars);
+        args.putParcelableArray("bars",bars);
         grid.setArguments(args);
         commitFragment(grid,true,"gridFragment");
     }

@@ -20,7 +20,7 @@ import java.util.concurrent.ExecutionException;
 public class GridFragment extends BaseFragment {
     GridView mGridView ;
     View view;
-    String[] bars;
+    Place[] places;
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
@@ -34,35 +34,34 @@ public class GridFragment extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        bars=getArguments().getStringArray("bars");
+        places=(Place[]) getArguments().getParcelableArray("bars");
         view=inflater.inflate(R.layout.fragment_grid, container, false);
         mGridView=(GridView)view.findViewById(R.id.grid);
         mGridView.setNumColumns(2);
-        ArrayAdapter<String> adapter=getAdapter(bars);
+        PlaceAdapter adapter = new PlaceAdapter(getContext(),places);
         mGridView.setAdapter(adapter);
-
         return view;
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item){
         if(item.getItemId()==Menu.FIRST){
-            mListener.changeListViewToGrid(bars);
+            mListener.changeListViewToGrid(places);
         }
         if(item.getItemId()==Menu.FIRST+1){
             getFragmentManager().popBackStack();
         }
         if(item.getItemId()==R.id.search) {
-            String[] buff=null;
+            Place[] places=null;
             GetAdresses locations = new GetAdresses();
             try {
-                buff = locations.execute(SearchFragment.location, "geometry").get();
+                places = locations.execute(SearchFragment.location, "geometry").get();
             } catch (InterruptedException e) {
                 e.printStackTrace();
             } catch (ExecutionException e) {
                 e.printStackTrace();
             }
-            if (buff != null)
-                mListener.addMapActivity(buff);
+            if (places != null)
+                mListener.addMapActivity(places);
         }
         return true;
     }

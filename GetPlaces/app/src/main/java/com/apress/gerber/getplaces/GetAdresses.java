@@ -23,12 +23,12 @@ import java.util.regex.Pattern;
  * Created by hriso on 7/12/2017.
  */
 
-class GetAdresses extends AsyncTask<String,Void,String[]> {
+class GetAdresses extends AsyncTask<String,Void,Place[]> {
     private String buff[];
-
     @Override
-    protected String[] doInBackground(String... params) {
+    protected Place[] doInBackground(String... params) {
         String LatLngt = params[0];
+        Place[] places=null;
         String search_for = params[1];
         HashMap<String,String> map = new HashMap<String,String>();
         LatLngt = LatLngt.split(Pattern.quote("("))[1];
@@ -47,23 +47,21 @@ class GetAdresses extends AsyncTask<String,Void,String[]> {
             }
             JSONObject barsJson = new JSONObject(getRequest.toString());
             JSONArray jsonArray = (barsJson.getJSONArray("results"));
+            places =new Place[jsonArray.length()] ;
             buff = new String[jsonArray.length()];
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject explrObject = jsonArray.getJSONObject(i);
-                buff[i] = (explrObject.get(search_for).toString());
-            }
-            if(search_for.equals("geometry")){
-                for(int i=0;i<buff.length;i++){
-                    String LatLang = buff[i].split(Pattern.quote("}"))[0];
-                    LatLang=LatLang.split(Pattern.quote("{"))[2];
-                    String Lat = LatLang.split(",")[0];
-                    Lat=Lat.split(":")[1];
-                    String Lag=LatLang.split(",")[1];
-                    Lag=Lag.split(":")[1];
-                    map.put(Lat,Lag);
-                }
-                String string = map.toString().replace("{","").replace("}","");
-                buff=string.split(",");
+                places[i]=new Place();
+                places[i].setName((explrObject.get("name")).toString());
+                String LatLang = ((explrObject.get("geometry")).toString()).split(Pattern.quote("}"))[0];
+                LatLang=LatLang.split(Pattern.quote("{"))[2];
+                String Lat = LatLang.split(",")[0];
+                Lat=Lat.split(":")[1];
+                String Lag=LatLang.split(",")[1];
+                Lag=Lag.split(":")[1];
+                places[i].setLat(Float.parseFloat(Lat));
+                places[i].setLng(Float.parseFloat(Lag));
+
             }
         } catch (MalformedURLException e) {
             e.printStackTrace();
@@ -73,6 +71,6 @@ class GetAdresses extends AsyncTask<String,Void,String[]> {
             e.printStackTrace();
         }
 
-        return buff;
+        return places;
     }
 }

@@ -1,6 +1,7 @@
 package com.apress.gerber.getplaces;
 
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -13,11 +14,13 @@ import android.widget.ListView;
 import android.widget.PopupMenu;
 import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
 public class ListFragment extends BaseFragment {
     ListView listView;
     private String[] bars;
+    private Place[] places;
     private Menu menu;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -27,14 +30,16 @@ public class ListFragment extends BaseFragment {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                final String place = (parent.getItemAtPosition(position)).toString();
-                PopupMenu popupMenu = new PopupMenu(getActivity(),view);
-                popupMenu.getMenuInflater().inflate(R.menu.popup_menu,popupMenu.getMenu());
+                final Place place = (Place) parent.getItemAtPosition(position);
+                final Place[] places = new Place[1];
+                places[0]=place;
+                PopupMenu popupMenu = new PopupMenu(getActivity(), view);
+                popupMenu.getMenuInflater().inflate(R.menu.popup_menu, popupMenu.getMenu());
                 popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
-                        if(item.getItemId()==R.id.showMap){
-                            Toast.makeText(getContext(),place,Toast.LENGTH_SHORT).show();
+                        if (item.getItemId() == R.id.showMap) {
+                            mListener.addMapActivity(places);
                         }
                         return false;
                     }
@@ -43,11 +48,14 @@ public class ListFragment extends BaseFragment {
 
             }
         });
-        bars = getArguments().getStringArray("bars");
-        ArrayAdapter<String> adapter = getAdapter(bars);
+        places = (Place[]) getArguments().getParcelableArray("bars");
+        PlaceAdapter adapter = new PlaceAdapter(getContext(),places);
         listView.setAdapter(adapter);
         return view;
     }
+
+
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,23 +69,23 @@ public class ListFragment extends BaseFragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem item){
         if(item.getItemId()==Menu.FIRST){
-            mListener.changeListViewToGrid(bars);
+            mListener.changeListViewToGrid(places);
         }
         if(item.getItemId()==Menu.FIRST+1){
             getFragmentManager().popBackStack();
         }
         if(item.getItemId()==R.id.search) {
-            String[] buff=null;
+            Place[] places=null;
             GetAdresses locations = new GetAdresses();
             try {
-                buff = locations.execute(SearchFragment.location, "geometry").get();
+                places = locations.execute(SearchFragment.location, "geometry").get();
             } catch (InterruptedException e) {
                 e.printStackTrace();
             } catch (ExecutionException e) {
                 e.printStackTrace();
             }
-            if (buff != null)
-                mListener.addMapActivity(buff);
+            if (places != null)
+                mListener.addMapActivity(places);
             }
         return true;
     }

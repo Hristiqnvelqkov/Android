@@ -29,10 +29,7 @@ public class BaseFragment extends Fragment {
         super.onCreate(savedInstanceState);
     }
 
-    ArrayAdapter<String> getAdapter(String[] buff){
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1, buff);
-        return  adapter;
-    }
+
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -51,8 +48,8 @@ public class BaseFragment extends Fragment {
 
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
-        void sendBarsToActivity(String[] bars);
-        void addMapActivity(String[] buff);
-        void changeListViewToGrid(String[] bars);
+        void sendBarsToActivity(Place[] bars);
+        void addMapActivity(Place[] buff);
+        void changeListViewToGrid(Place[] bars);
     }
 }

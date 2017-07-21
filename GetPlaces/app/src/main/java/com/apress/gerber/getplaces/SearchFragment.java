@@ -48,14 +48,14 @@ public class SearchFragment extends BaseFragment {
     }
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        String[] buff ;
+        com.apress.gerber.getplaces.Place[] buff;
         if (requestCode == PLACE_AUTOCOMPLETE_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
                 Place place = PlaceAutocomplete.getPlace(getContext(), data);
                 GetAdresses get = new GetAdresses();
                 location=place.getLatLng().toString();
                 try {
-                    buff=get.execute(location,"name").get();
+                    buff=  get.execute(location,"name").get();
                     sendBars(buff);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
@@ -66,7 +66,7 @@ public class SearchFragment extends BaseFragment {
             }
         }
     }
-    public void sendBars(String[] bars){
+    public void sendBars(com.apress.gerber.getplaces.Place[] bars){
         mListener.sendBarsToActivity(bars);
     }
 }
