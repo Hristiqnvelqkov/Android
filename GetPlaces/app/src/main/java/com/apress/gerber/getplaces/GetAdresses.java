@@ -29,8 +29,6 @@ class GetAdresses extends AsyncTask<String,Void,Place[]> {
     protected Place[] doInBackground(String... params) {
         String LatLngt = params[0];
         Place[] places=null;
-        String search_for = params[1];
-        HashMap<String,String> map = new HashMap<String,String>();
         LatLngt = LatLngt.split(Pattern.quote("("))[1];
         LatLngt = LatLngt.split(Pattern.quote(")"))[0];
         StringBuffer getRequest = new StringBuffer();

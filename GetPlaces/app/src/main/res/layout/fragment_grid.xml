@@ -3,13 +3,14 @@
              xmlns:tools="http://schemas.android.com/tools"
              android:layout_width="match_parent"
              android:layout_height="match_parent"
-             tools:context="com.apress.gerber.getplaces.GridFragment">
-
+             tools:context="com.apress.gerber.getplaces.GridFragment"
+                android:id="@+id/test">
 
     <!-- TODO: Update blank fragment layout -->
 
     <GridView
         android:id="@+id/grid"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:numColumns="2"/>
 </RelativeLayout>

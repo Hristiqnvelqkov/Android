@@ -1,26 +1,13 @@
 package com.apress.gerber.getplaces;
 
-import android.content.Context;
-import android.content.Intent;
-import android.net.Uri;
-import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
-import android.widget.TextView;
 
+import android.content.Intent;
+import android.os.Bundle;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
-import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceAutocomplete;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.concurrent.ExecutionException;
 
@@ -55,7 +42,7 @@ public class SearchFragment extends BaseFragment {
                 GetAdresses get = new GetAdresses();
                 location=place.getLatLng().toString();
                 try {
-                    buff=  get.execute(location,"name").get();
+                    buff=  get.execute(location).get();
                     sendBars(buff);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
