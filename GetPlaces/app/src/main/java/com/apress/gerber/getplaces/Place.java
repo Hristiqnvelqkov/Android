@@ -4,7 +4,7 @@ package com.apress.gerber.getplaces;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-class Place implements Parcelable {
+public class Place implements Parcelable {
     private String name;
     private float lat;
     private float lng;

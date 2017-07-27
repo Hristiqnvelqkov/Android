@@ -1,7 +1,8 @@
-package com.apress.gerber.getplaces;
+package com.apress.gerber.getplaces.com.apress.gerber.getplaces.com.apress.gerber.getplaces.tasks;
 
 import android.os.AsyncTask;
 
+import com.apress.gerber.getplaces.Place;
 import com.google.android.gms.maps.model.LatLng;
 
 import org.json.JSONArray;
@@ -19,12 +20,8 @@ import java.util.HashMap;
 import java.util.concurrent.ExecutionException;
 import java.util.regex.Pattern;
 
-/**
- * Created by hriso on 7/12/2017.
- */
 
-class GetAdresses extends AsyncTask<String,Void,Place[]> {
-    private String buff[];
+public class GetAdresses extends AsyncTask<String,Void,Place[]> {
     @Override
     protected Place[] doInBackground(String... params) {
         String LatLngt = params[0];
@@ -46,7 +43,6 @@ class GetAdresses extends AsyncTask<String,Void,Place[]> {
             JSONObject barsJson = new JSONObject(getRequest.toString());
             JSONArray jsonArray = (barsJson.getJSONArray("results"));
             places =new Place[jsonArray.length()] ;
-            buff = new String[jsonArray.length()];
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject explrObject = jsonArray.getJSONObject(i);
                 places[i]=new Place();

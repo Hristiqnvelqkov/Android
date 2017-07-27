@@ -1,8 +1,12 @@
-package com.apress.gerber.getplaces;
+package com.apress.gerber.getplaces.com.apress.gerber.getplaces.fragments;
 
 
 import android.content.Intent;
 import android.os.Bundle;
+
+import com.apress.gerber.getplaces.Constants;
+import com.apress.gerber.getplaces.com.apress.gerber.getplaces.com.apress.gerber.getplaces.tasks.GetAdresses;
+import com.apress.gerber.getplaces.com.apress.gerber.getplaces.activities.MainActivity;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.location.places.Place;
@@ -20,7 +24,7 @@ public class SearchFragment extends BaseFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if(getFragmentManager().findFragmentByTag(MainActivity.LIST_TAG)==null) {
+        if(getFragmentManager().findFragmentByTag(Constants.LIST_TAG)==null) {
             try {
                 Intent intent =
                         new PlaceAutocomplete.IntentBuilder(PlaceAutocomplete.MODE_FULLSCREEN)
@@ -33,6 +37,7 @@ public class SearchFragment extends BaseFragment {
             }
         }
     }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         com.apress.gerber.getplaces.Place[] buff;

@@ -1,8 +1,11 @@
-package com.apress.gerber.getplaces;
+package com.apress.gerber.getplaces.com.apress.gerber.getplaces.activities;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
+import com.apress.gerber.getplaces.Constants;
+import com.apress.gerber.getplaces.Place;
+import com.apress.gerber.getplaces.R;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -20,7 +23,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        locations=getIntent().getParcelableArrayListExtra("bars");
+        locations=getIntent().getParcelableArrayListExtra(Constants.BARS);
         for(Place place : locations){
             markers.add(new LatLng(place.getLat(),place.getLng()));
         }

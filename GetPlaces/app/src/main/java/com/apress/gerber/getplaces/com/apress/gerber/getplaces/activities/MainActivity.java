@@ -1,11 +1,17 @@
-package com.apress.gerber.getplaces;
+package com.apress.gerber.getplaces.com.apress.gerber.getplaces.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+
+import com.apress.gerber.getplaces.Constants;
+import com.apress.gerber.getplaces.com.apress.gerber.getplaces.fragments.BaseFragment;
+import com.apress.gerber.getplaces.Place;
+import com.apress.gerber.getplaces.R;
+import com.apress.gerber.getplaces.com.apress.gerber.getplaces.fragments.RecyclePlaceFragment;
+import com.apress.gerber.getplaces.com.apress.gerber.getplaces.fragments.SearchFragment;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -13,16 +19,14 @@ import java.util.Arrays;
 
 public class MainActivity extends AppCompatActivity implements BaseFragment.OnFragmentInteractionListener {
     FragmentManager manager = getSupportFragmentManager();
-    public static final String SEARCH_TAG="search_form";
-    public static final String LIST_TAG="lists";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        if(manager.findFragmentByTag(LIST_TAG)==null) {
-            if(manager.findFragmentByTag(SEARCH_TAG)==null) {
+        if(manager.findFragmentByTag(Constants.LIST_TAG)==null) {
+            if(manager.findFragmentByTag(Constants.SEARCH_TAG)==null) {
                 Fragment search = new SearchFragment();
-                commitFragment(search, false,SEARCH_TAG);
+                commitFragment(search, false,Constants.SEARCH_TAG);
             }
         }
     }
@@ -46,26 +50,29 @@ public class MainActivity extends AppCompatActivity implements BaseFragment.OnFr
     }
     @Override
     public void sendBarsToActivity(Place[] bars) {
-        Fragment listBars = new ListFragment();
+        Fragment listBars = new RecyclePlaceFragment();
         Bundle args = new Bundle();
-        args.putParcelableArray("bars",bars);
+        args.putParcelableArray(Constants.BARS,bars);
         listBars.setArguments(args);
-        commitFragment(listBars,true,LIST_TAG);
+        commitFragment(listBars,true,Constants.LIST_TAG);
     }
 
     @Override
     public void addMapActivity(Place[] buff) {
         ArrayList<Place> places = new ArrayList<Place>(Arrays.asList(buff));
         Intent intent = new Intent(this,MapActivity.class);
-        intent.putParcelableArrayListExtra("bars",places);
+        intent.putParcelableArrayListExtra(Constants.BARS,places);
         startActivity(intent);
     }
+
     @Override
-    public void changeListViewToGrid(Place[] bars){
-        Fragment grid = new GridFragment();
-        Bundle args = new Bundle();
-        args.putParcelableArray("bars",bars);
-        grid.setArguments(args);
-        commitFragment(grid,true,"gridFragment");
-    }
+    public void onBackPressed(){
+        Fragment listView = manager.findFragmentByTag(Constants.LIST_TAG);
+        Fragment search = manager.findFragmentByTag(Constants.SEARCH_TAG);
+        Bundle bundle= new Bundle();
+        if(listView!=null){
+            search.onCreate(bundle);
+        }else
+             super.onBackPressed();
+   }
 }
